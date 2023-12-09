@@ -2,12 +2,12 @@
 --Scripted by Corrouge
 local s,id=GetID()
 function s.initial_effect(c)
-	--Devient un monstre normal quand elle est dans le cimetière
+	--Devient un monstre normal quand elle est sur le terrain ou dans le cimetière
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetCode(EFFECT_ADD_TYPE)
-	e1:SetRange(LOCATION_MZONE+LOCATION_GRAVE)
+	e1:SetRange(LOCATION_MZONE|LOCATION_GRAVE)
 	e1:SetValue(TYPE_NORMAL)
 	c:RegisterEffect(e1)
 	local e1a=e1:Clone()
@@ -31,7 +31,7 @@ function s.cfilter(c)
 	return c:IsFaceup() and c:IsCode(31076103)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_SZONE+LOCATION_GRAVE,0,1,nil) and Duel.GetAttacker():IsControler(1-tp)
+	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_SZONE|LOCATION_GRAVE,0,1,nil) and Duel.GetAttacker():IsControler(1-tp)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()

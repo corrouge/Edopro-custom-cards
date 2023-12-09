@@ -68,7 +68,7 @@ function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return (code1==31076103 or code2==31076103)
 end
 function s.thfilter(c)
-	return c:IsRace(RACE_ZOMBIE) and c:IsLevelBelow(4) and (c:IsAttack(0) or c:IsDefense(0)) and c:IsAbleToHand()
+	return c:IsRace(RACE_ZOMBIE) and (c:IsAttack(0) or c:IsDefense(0)) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
@@ -87,7 +87,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetTargetRange(1,0)
 		e1:SetTarget(s.sumlimit)
 		e1:SetLabel(sc:GetCode())
-		e1:SetReset(RESET_PHASE+PHASE_END)
+		e1:SetReset(RESET_PHASE+PHASE_END+RESET_SELF_TURN)
 		Duel.RegisterEffect(e1,tp)
 		local e2=e1:Clone()
 		e2:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)

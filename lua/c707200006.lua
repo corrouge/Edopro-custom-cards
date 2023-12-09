@@ -3,13 +3,6 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-	--Uniquement Invocable Rituellement
-	local e0=Effect.CreateEffect(c)
-	e0:SetType(EFFECT_TYPE_SINGLE)
-	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e0:SetCode(EFFECT_SPSUMMON_CONDITION)
-	e0:SetValue(aux.ritlimit)
-	c:RegisterEffect(e0)
 	--Posez 1 "Premier Sarcophage" depuis votre deck
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -42,9 +35,6 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_names={id,31076103}
-function s.mat_filter(c)
-	return c:GetLevel()~=8
-end
 
 function s.stcon(e,tp,eg,ep,ev,re,r,rp)
 	return not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,31076103),tp,LOCATION_SZONE,0,1,nil)

@@ -4,4 +4,4 @@ Disponible en version française and English.
 
 Edit 30.01.24 : 
 Ajout de deck de structure.
-Ajout du support Worm (english soon...)
+Ajout du support Worm et fortune lady (english soon...)

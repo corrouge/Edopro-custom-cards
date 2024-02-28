@@ -1,4 +1,4 @@
---Combat sans fin de la nébuleuse W
+--Combat sans fin contre nébuleuse W
 --Scripted by Corrouge
 local s,id=GetID()
 local SET_W_Nebula=0x701
@@ -30,7 +30,7 @@ function s.initial_effect(c)
 	e2:SetTarget(s.disable)
 	e2:SetTargetRange(LOCATION_ONFIELD,LOCATION_ONFIELD)
 	c:RegisterEffect(e2)
-	--Previens sa destruction
+	--Previent sa destruction
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
@@ -55,8 +55,17 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local sc=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.spfilter),tp,LOCATION_GRAVE,0,1,1,nil,e,tp):GetFirst()
-	if sc then
-		Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)
+	if sc and Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE) then
+		local code=sc:GetOriginalCodeRule()
+		--Ne peut pas invoquer spécialement de monstre du même nom d'origine avec l'effet de GSF
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+		e1:SetTargetRange(1,0)
+		e1:SetTarget(function(e,c,sp,sumtype,sumpos,target_p,sumeff) return c:IsOriginalCodeRule(code) and sumeff:GetHandler():IsCode(id) end)
+		e1:SetReset(RESET_PHASE|PHASE_END)
+		Duel.RegisterEffect(e1,tp)
 	end
 end
 

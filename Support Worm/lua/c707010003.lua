@@ -1,4 +1,4 @@
---Ver - Lune
+--Ver Lune
 --Scripted by Corrouge
 local s,id=GetID()
 local SET_W_Nebula=0x701
@@ -43,7 +43,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 end
 function s.checkfilter(c,tp)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsReason(REASON_EFFECT) and c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousControler(tp)
+	return c:IsRace(RACE_REPTILE) and c:IsReason(REASON_EFFECT) and c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousControler(tp)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return rp==1-tp and eg:IsExists(s.checkfilter,1,nil,tp)
@@ -51,14 +51,14 @@ end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,0,id)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(1-tp,aux.TRUE,1-tp,LOCATION_ONFIELD,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(1-tp,aux.TRUE,1-tp,LOCATION_MZONE,0,1,1,nil)
 	if #g>0 then
 		Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
 	end
 end
 
 function s.tgfilter(c)
-	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT)
+	return c:IsFaceup() and c:IsRace(RACE_REPTILE)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()

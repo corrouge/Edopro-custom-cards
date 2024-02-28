@@ -1,4 +1,4 @@
---Ver - Princesse
+--Ver Princesse
 --Scripted by Corrouge
 local s,id=GetID()
 local SET_W_Nebula=0x701
@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetHintTiming(0,TIMING_MAIN_END|TIMINGS_CHECK_MONSTER)
 	e1:SetCountLimit(1,{id,1})
-	e1:SetCondition(function() return Duel.IsMainPhase() end)
+	e1:SetCondition(function() return Duel.IsMainPhase() and Duel.IsTurnPlayer(1-tp) end)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)

@@ -1,4 +1,4 @@
---Ver - Princesse
+--Ver Coeur
 --Scripted by Corrouge
 local s,id=GetID()
 local SET_W_Nebula=0x701
@@ -26,10 +26,24 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1)
-	--e2:SetCondition(s.thcon)
+	e2:SetCondition(s.thcon)
 	e2:SetTarget(s.thtg)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
+	--Check
+	aux.GlobalCheck(s,function()
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_SUMMON_SUCCESS)
+		ge1:SetLabel(id)
+		ge1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		ge1:SetOperation(aux.sumreg)
+		Duel.RegisterEffect(ge1,0)
+		local ge2=ge1:Clone()
+		ge2:SetCode(EVENT_SPSUMMON_SUCCESS)
+		ge2:SetLabel(id)
+		Duel.RegisterEffect(ge2,0)
+	end)
 end
 s.listed_series={SET_WORM,SET_W_Nebula}
 s.listed_names={id,CARD_W_NEBULA_METEORITE}
@@ -85,8 +99,7 @@ end
 
 
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return c:IsSummonType(SUMMON_TYPE_SPECIAL) and c:IsStatus(STATUS_SUMMON_TURN)		
+	return e:GetHandler():GetFlagEffect(id)>0	
 end
 function s.thfilter(c)
 	return c:IsRace(RACE_REPTILE) and c:IsSetCard(SET_WORM) and c:IsLevelAbove(5) and c:IsAbleToHand()

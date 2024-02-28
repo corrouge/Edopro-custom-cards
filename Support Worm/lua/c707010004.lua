@@ -27,12 +27,16 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_LEAVE_FIELD)
 	e2:SetRange(LOCATION_GRAVE)
-	e2:SetCountLimit(1,id)
-	e2:SetCondition(s.spcon)
+	e2:SetCountLimit(1,id,EFFECT_COUNT_CODE_DUEL)
+	e2:SetCondition(s.spcon1)
 	e2:SetCost(aux.bfgcost)
 	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
+	local e2a=e2:Clone()
+	e2a:SetCode(EVENT_BATTLE_DESTROYED)
+	e2a:SetCondition(s.spcon2)
+	c:RegisterEffect(e2a)
 end
 s.listed_series={SET_WORM,SET_W_Nebula}
 s.listed_names={id,CARD_WORM_ZERO}
@@ -50,10 +54,14 @@ end
 
 
 function s.checkfilter(c,tp)
-	return c:IsCode(CARD_WORM_ZERO) and c:IsReason(REASON_EFFECT) and c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousControler(tp)
+	return c:IsCode(CARD_WORM_ZERO) and c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousControler(tp) 
+		and (c:IsLocation(LOCATION_GRAVE) or c:IsLocation(LOCATION_REMOVED))
 end
-function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+function s.spcon1(e,tp,eg,ep,ev,re,r,rp)
 	return rp==1-tp and eg:IsExists(s.checkfilter,1,nil,tp)
+end
+function s.spcon2(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.checkfilter,1,nil,tp)
 end
 function s.spfilter(c,e,sp)
 	return c:IsSetCard(SET_WORM) and c:IsRace(RACE_REPTILE) and c:IsCanBeSpecialSummoned(e,0,sp,false,false)

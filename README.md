@@ -5,4 +5,5 @@ Disponible en version française and English.
 # Détails
 
 1. Support Worm | 6 cartes | `Terminé`
-2. 
+2. Support The First Sarcophagus | 7 cartes | `Terminé`
+3. Support Fortune Lady | 4/? cartes | `WIP`

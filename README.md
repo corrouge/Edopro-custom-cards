@@ -2,7 +2,7 @@
 Ici je partage mes cartes customs dans Edopro. Qu'il s'agisse du support ou de nouveau archétype.
 Disponible en version française and English.
 
-# Détails
+## Détails
 
 1. Support Worm | 6 cartes | `Terminé`
 2. Support The First Sarcophagus | 7 cartes | `Terminé`

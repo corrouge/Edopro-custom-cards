@@ -6,7 +6,7 @@ Disponible en version française and English.
 
 1. Support Worm | 6 cartes | `Terminé`
 2. Support The First Sarcophagus | 7 cartes | `Terminé`
-3. Support Fortune Lady | 4/? cartes | `Hiatus`
+3. Support Fortune Lady | 4/? cartes | `Plus de support à venir`
 4. Animancie & Sinful Weapons | 0/12 cartes | `À venir`
 
 ## À vénir

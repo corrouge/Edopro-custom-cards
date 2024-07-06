@@ -28,23 +28,23 @@ function s.initial_effect(c)
 	e2:SetTarget(s.thtg)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
-	--Protection
+	--Protection vos cartes dans vos M/P zones
 	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e3:SetType(EFFECT_TYPE_FIELD)
 	e3:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	e3:SetRange(LOCATION_FZONE)
-	e3:SetCondition(s.ptcon)
-	e3:SetValue(1)
+	e3:SetTargetRange(LOCATION_SZONE,0)
+	e3:SetTarget(function(e,c) return c:IsFaceup() and c:IsSpellTrap() and c~=e:GetHandler() end)
+	e3:SetValue(aux.indoval)
 	c:RegisterEffect(e3)
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD)
-	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e4:SetCode(EFFECT_CANNOT_REMOVE)
+	e4:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+	e4:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE)
 	e4:SetRange(LOCATION_FZONE)
-	e4:SetTargetRange(1,1)
-	e4:SetCondition(s.ptcon)
-	e4:SetTarget(function(e,c,tp,r) return c==e:GetHandler() and r==REASON_EFFECT end)
+	e4:SetTargetRange(LOCATION_SZONE,0)
+	e4:SetTarget(function(e,c) return c:IsFaceup() and c:IsSpellTrap() and c~=e:GetHandler() end)
+	e4:SetValue(s.etg)
 	c:RegisterEffect(e4)
 
 end
@@ -98,10 +98,7 @@ function s.sumlimit(e,c)
 	return c:IsCode(e:GetLabel())
 end
 
-function s.cfilter(c)
-	return c:IsFaceup() and c:IsCode(25343280)
-end
-function s.ptcon(e)
-	local tp=e:GetHandlerPlayer()
-	return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0 or Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
+--Protection
+function s.etg(e,re,rp)
+	return re:IsActiveType(TYPE_MONSTER)
 end

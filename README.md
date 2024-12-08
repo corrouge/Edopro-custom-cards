@@ -4,6 +4,7 @@ Disponible en version française and English.
 
 ## Détails
 
-1. Support Worm | 6 cartes | `Terminé`
-2. Support The First Sarcophagus | 7 cartes | `Terminé`
-3. Support Fortune Lady | 6 cartes | `Terminé`
+1. Support Worm/Ver | 6 cartes | `Terminé`
+2. Support The First Sarcophagus/Premier Sarcophage | 7 cartes | `Terminé`
+3. Support Fortune Lady/Demoiselle de fortune | 6 cartes | `Terminé`
+4. Support Graydle/Berceau-Gris (Seulement Français) | 3/5 cartes | `En cours`

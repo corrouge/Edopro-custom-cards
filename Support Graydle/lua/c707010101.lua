@@ -59,7 +59,7 @@ s.listed_names={id}
 function s.effectfilter(e,ct)
 	local p=e:GetHandler():GetControler()
 	local te,tp,loc=Duel.GetChainInfo(ct,CHAININFO_TRIGGERING_EFFECT,CHAININFO_TRIGGERING_PLAYER,CHAININFO_TRIGGERING_LOCATION)
-	return p==tp and te:GetHandler():IsSetCard(SET_GRAYDLE) and (loc&LOCATION_ONFIELD~=0 or loc&LOCATION_GRAVE~=0)
+	return te:GetHandler():IsSetCard(SET_GRAYDLE) and (loc&LOCATION_ONFIELD~=0 or loc&LOCATION_GRAVE~=0)
 end
 
 function s.athfilter(c,e,tp)

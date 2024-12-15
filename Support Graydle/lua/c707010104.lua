@@ -13,19 +13,19 @@ function s.initial_effect(c)
 	e1:SetTarget(s.distg)
 	e1:SetOperation(s.disop)
 	c:RegisterEffect(e1)
-	--invocation speciale
+	--pot d'avarice effet
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_TODECK+CATEGORY_DRAW)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e2:SetHintTiming(0,TIMINGS_CHECK_MONSTER_E)
 	e2:SetRange(LOCATION_GRAVE)
-	e2:SetCountLimit(1,{id,1})
-	e2:SetCondition(function(e,tp) return Duel.IsMainPhase() end)
+	e2:SetHintTiming(0,TIMING_END_PHASE)
+	e2:SetCondition(aux.exccon)
 	e2:SetCost(aux.bfgcost)
-	e2:SetTarget(s.gytg)
-	e2:SetOperation(s.gyop)
+	e2:SetTarget(s.drtg)
+	e2:SetOperation(s.drop)
 	c:RegisterEffect(e2)
 end
 s.listed_series={SET_GRAYDLE}
@@ -59,21 +59,27 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function s.gyfilter(c,e)
-	return c:IsAttackAbove(1) and c:GetOwner()~=e:GetHandlerPlayer()
+function s.tdfilter(c)
+	return (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE)) and c:IsMonster() and c:IsAttribute(ATTRIBUTE_WATER) and c:IsAbleToDeck()
 end
-function s.gytg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.gyfilter(chkc,e) end
-	if chk==0 then return Duel.IsExistingTarget(s.gyfilter,tp,LOCATION_MZONE,0,1,e:GetHandler(),e) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectTarget(tp,s.gyfilter,tp,LOCATION_MZONE,0,1,1,nil,e)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,g:GetAttack()/2)
-	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,g,0,0)
+function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return (chkc:IsLocation(LOCATION_REMOVED) or chkc:IsLocation(LOCATION_GRAVE)) and chkc:IsControler(tp) and s.tdfilter(chkc) end
+	if chk==0 then return Duel.IsPlayerCanDraw(tp,1)
+		and Duel.IsExistingTarget(s.tdfilter,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,3,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
+	local g=Duel.SelectTarget(tp,s.tdfilter,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,3,3,nil)
+	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,#g,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
 end
-function s.gyop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if not tc:IsRelateToEffect(e) or tc:IsAttackBelow(0) then return end
-	if Duel.Damage(tp,tc:GetAttack()/2,REASON_EFFECT)>0 then
-		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-	end		
+function s.drop(e,tp,eg,ep,ev,re,r,rp)
+	local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
+	if #tg<=0 then return end
+	Duel.SendtoDeck(tg,nil,0,REASON_EFFECT)
+	local g=Duel.GetOperatedGroup()
+	if g:IsExists(Card.IsLocation,1,nil,LOCATION_DECK) then Duel.ShuffleDeck(tp) end
+	local ct=g:FilterCount(Card.IsLocation,nil,LOCATION_DECK+LOCATION_EXTRA)
+	if ct>0 then
+		Duel.BreakEffect()
+		Duel.Draw(tp,1,REASON_EFFECT)
+	end
 end

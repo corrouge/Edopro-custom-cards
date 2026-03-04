@@ -8,3 +8,4 @@ Disponible en version française and English.
 2. Support The First Sarcophagus/Premier Sarcophage | 7 cartes | `Terminé`
 3. Support Fortune Lady/Demoiselle de fortune | 6 cartes | `Terminé`
 4. Support Graydle/Berceau-Gris | 5 cartes | `Terminé`
+6. Support Watt/Électro-| 6 cartes | `Terminé`
